@@ -25,8 +25,17 @@ public class ProductsController {
                         @RequestParam(name = "min", required = false) Double min,
                         @RequestParam(name = "max", required = false) Double max,
                         @RequestParam(name = "partName", required = false) String partName){
-        model.addAttribute("minCost", productService.getMinimumCost());
-        model.addAttribute("maxCost", productService.getMaximumCost());
+        Double minimumCost = productService.getMinimumCost();
+        Double maximumCost = productService.getMaximumCost();
+        min = min == null ? minimumCost : min;
+        max = max == null ? maximumCost : max;
+        partName = partName == null ? "" : partName;
+
+        model.addAttribute("minCost", minimumCost);
+        model.addAttribute("maxCost", maximumCost);
+        model.addAttribute("partName", partName);
+        model.addAttribute("from", min);
+        model.addAttribute("to", max);
         model.addAttribute("prods", productService.getProducts(min, max, partName));
         return "products/products";
     }

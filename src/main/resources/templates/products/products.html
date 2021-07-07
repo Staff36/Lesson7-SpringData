@@ -14,20 +14,26 @@
         <div class="content" style="margin: auto; display: flex; flex-direction: column; align-content: center; max-width: 700px">
             <h2 style="margin: 50px 0 0 20px; align-self: center">Каталог товаров</h2>
             <hr>
-            <div class="container-fluid">
-                <div class="col-md-12">
+            <div class="container-fluid" style="display: flex; align-items: center; justify-content: center; flex-direction: column">
+                <label for="range"><b>Цена</b></label>
+                <div class="col-md-12" s>
                     <div class="form-group row">
-                        <label for="range_03" class="col-sm-2 control-label">
-                            <b>Цена</b>
-                        </label>
                         <div class="col-sm-10">
-                            <input type="text" id="range_03">
+                            <input type="text" id="range">
                         </div>
                     </div>
                 </div>
+                <label for="partName"><b>Поиск по имени</b></label>
+                <form style="padding: 0 0 30px 0; align-self: center; flex-direction: column; justify-content: center" th:action="@{/products}" method="get">
+                    <input type="text" name="partName"  th:value="${partName}" id="partName" size="50"/>
+                    <input type="hidden" name="min" id="min">
+                    <input type="hidden" name="max" id="max">
+                    <input type="submit" value="Фильтр" class="btn btn-primary" style="justify-content: right">
+                </form>
             </div>
-
+            <hr>
             <a th:href="@{/products/new}" class="btn btn-primary" style="width: 200px; align-self: center">Добавить новый</a>
+            <hr>
             <div style="display:flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: center;">
                 <div th:each="product : ${prods}" class="card" style="width: 18rem; margin: 20px">
                     <div class="card-body">
@@ -46,17 +52,24 @@
         </div>
         <script>
             $(document).ready(function () {
-                $("#range_03").ionRangeSlider({
+                $("#range").ionRangeSlider({
                     type: "Float",
                     grid: true,
                     min: [[${minCost}]],
                     max: [[${maxCost}]],
-                    from: [[${minCost}]],
+                    from: [[${from}]],
                     step: 0.01,
-                    to: [[${maxCost}]],
-                    prefix: "$"
+                    to: [[${to}]],
+                    prefix: "$",
+                    onFinish: function (data){
+                        var minimum = data.from;
+                        var maximum = data.to;
+                        document.getElementById('min').value = minimum;
+                        document.getElementById('max').value = maximum;
+                    }
                 });
             });
+
 
         </script>
     </body>
