@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Товары</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2018/irs/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2018/irs/ion.rangeSlider.skin.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://bootstraptema.ru/plugins/2018/irs/ion.rangeSlider.min.js"></script>
+</head>
+    <body>
+        <div class="content" style="margin: auto; display: flex; flex-direction: column; align-content: center; max-width: 700px">
+            <h2 style="margin: 50px 0 0 20px; align-self: center">Каталог товаров</h2>
+            <hr>
+            <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label for="range_03" class="col-sm-2 control-label">
+                            <b>Цена</b>
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" id="range_03">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a th:href="@{/products/new}" class="btn btn-primary" style="width: 200px; align-self: center">Добавить новый</a>
+            <div style="display:flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: center;">
+                <div th:each="product : ${prods}" class="card" style="width: 18rem; margin: 20px">
+                    <div class="card-body">
+                        <h5 th:text="${product.getName()}" class="card-title">Card title</h5>
+                        <p th:text=" ${#strings.abbreviate(product.getDescription(),100)}" class="card-text"></p>
+                        <div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center">
+                            <a th:href="@{/products/{id}(id = ${product.getId()})}" class="btn btn-primary">Подробнее</a>
+                            <form th:method="DELETE" th:action="@{/products/{id}(id = ${product.getId()})}">
+                                <input type="submit" value="Удалить" class="btn btn-primary" style="background-color: #a81e1e">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#range_03").ionRangeSlider({
+                    type: "Float",
+                    grid: true,
+                    min: [[${minCost}]],
+                    max: [[${maxCost}]],
+                    from: [[${minCost}]],
+                    step: 0.01,
+                    to: [[${maxCost}]],
+                    prefix: "$"
+                });
+            });
+
+        </script>
+    </body>
+
+</html>
+
