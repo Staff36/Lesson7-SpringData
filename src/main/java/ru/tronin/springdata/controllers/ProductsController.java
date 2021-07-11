@@ -3,24 +3,22 @@ package ru.tronin.springdata.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.tronin.springdata.exceptions.NoEntityException;
-import ru.tronin.springdata.models.Product;
+import ru.tronin.springdata.models.entities.Product;
+import ru.tronin.springdata.models.dto.ProductDto;
+import ru.tronin.springdata.repositories.CategoriesRepository;
+import ru.tronin.springdata.repositories.ProductRepository;
 import ru.tronin.springdata.services.ProductService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 
 @RestController
@@ -29,31 +27,34 @@ public class ProductsController {
 
     @Autowired
     private ProductService productService;
-
+    @Autowired
+    private CategoriesRepository categoriesRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @GetMapping()
-    public Page<Product> index(Model model,
-                        @PageableDefault(size = 12) Pageable pageable,
-                        @RequestParam(name = "min_price", required = false) Double min,
-                        @RequestParam(name = "max_price", required = false) Double max,
-                        @RequestParam(name = "name_part", required = false) String partName){
+    public Page<ProductDto> index(Model model,
+                                  @PageableDefault(size = 12) Pageable pageable,
+                                  @RequestParam(name = "min_price", required = false) Double min,
+                                  @RequestParam(name = "max_price", required = false) Double max,
+                                  @RequestParam(name = "name_part", required = false) String partName){
 
             return productService.findPaginatedProducts(pageable, min, max, partName);
     }
 
 
 
-//    @GetMapping("/{id}")
-//    public String showProduct(@PathVariable Long id, Model model){
-//    model.addAttribute("product", productService.getEntityById(id));
-//    return "products/show";
-//}
+    @GetMapping("/{id}")
+    public String showProduct(@PathVariable Long id, Model model){
+    model.addAttribute("product", productService.getEntityById(id));
+    return "products/show";
+}
 
-//    @GetMapping("/new")
-//    public String newProduct(Model model){
-//        model.addAttribute("prod", new Product());
-//        return "products/new";
-//     }
+    @GetMapping("/new")
+    public String newProduct(Model model){
+        model.addAttribute("prod", new Product());
+        return "products/new";
+     }
 
     @PostMapping()
     public ResponseEntity<Object> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {

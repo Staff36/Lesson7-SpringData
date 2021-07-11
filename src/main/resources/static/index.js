@@ -35,7 +35,7 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
 
     }
 
-    $scope.submitUpdateProduct = function () {
+    $scope.submitCreateNewProduct = function () {
         $http.post(contextPath + '/products', $scope.newProduct)
             .then(function (response) {
                 $scope.newProduct = null;
@@ -43,13 +43,14 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     };
 
-    // $scope.submitCreateNewProduct = function () {
-    //     $http.patch(contextPath + '/products', $scope.updatedProduct)
-    //         .then(function (response) {
-    //             $scope.newProduct = null;
-    //             $scope.fillTable();
-    //         });
-    // };
+    $scope.submitUpdateNewProduct = function () {
+        $http.patch(contextPath + '/products', $scope.updatedProduct)
+            .then(function (response) {
+                $scope.newProduct = null;
+                $scope.fillTable();
+            });
+    };
+
     $scope.numberPages = [
         { name: '5', value: 5 },
         { name: '10', value: 10 },

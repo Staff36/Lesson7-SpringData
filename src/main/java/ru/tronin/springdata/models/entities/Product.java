@@ -1,18 +1,20 @@
-package ru.tronin.springdata.models;
+package ru.tronin.springdata.models.entities;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -27,4 +29,23 @@ public class Product {
     String description;
     @Min(value = 0, message = "Цена не может быть отрицательной")
     Double cost;
+
+    @ManyToOne(targetEntity = Category.class)
+    @JoinColumn(name = "category", referencedColumnName = "id")
+    Category category;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    public Product(String name, String description, Double cost, Category category) {
+        this.name = name;
+        this.description = description;
+        this.cost = cost;
+        this.category = category;
+    }
 }
