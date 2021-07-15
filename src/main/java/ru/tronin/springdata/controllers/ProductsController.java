@@ -45,16 +45,16 @@ public class ProductsController {
 
 
     @GetMapping("/{id}")
-    public String showProduct(@PathVariable Long id, Model model){
-    model.addAttribute("product", productService.getEntityById(id));
-    return "products/show";
+    public ProductDto showProduct(@PathVariable Long id){
+
+    return productService.getEntityById(id);
 }
 
-    @GetMapping("/new")
-    public String newProduct(Model model){
-        model.addAttribute("prod", new Product());
-        return "products/new";
-     }
+//    @GetMapping("/new")
+//    public String newProduct(Model model){
+//        model.addAttribute("prod", new Product());
+//        return "products/new";
+//     }
 
     @PostMapping()
     public ResponseEntity<Object> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {

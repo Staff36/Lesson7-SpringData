@@ -31,10 +31,11 @@ public class ProductService {
 
     public ProductDto getEntityById(Long id) {
         Product product = productRepository.getById(id);
+
         if(product.getId() == null){
             throw new NoEntityException("Entity with id =" + id + " not found");
         }
-        return mapProductToDto(productRepository.getById(id));
+        return mapProductToDto(product);
     }
 
     public Page<ProductDto> findPaginatedProducts(Pageable pageable, Double min, Double max, String namePart){

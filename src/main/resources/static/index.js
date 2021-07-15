@@ -14,6 +14,8 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             }
         }).then(function (response) {
             $scope.ProductsList = response.data.content;
+            $scope.first = response.data.first;
+            $scope.last = response.data.last;
             var pages = response.data.totalPages;
             var pagination = fillArray(pages);
             $scope.PagesList = pagination;

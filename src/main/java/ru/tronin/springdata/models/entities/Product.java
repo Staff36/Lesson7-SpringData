@@ -23,9 +23,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Size(min = 2, max = 64, message = "Количетсво символов в поле Имя должно быть в диапазоне от 2 до 64")
+//    @Size(min = 2, max = 64, message = "Количетсво символов в поле Имя должно быть в диапазоне от 2 до 64")
     String name;
-    @NotEmpty(message = "Значение не может быть пустым")
+//    @NotEmpty(message = "Значение не может быть пустым")
     String description;
     @Min(value = 0, message = "Цена не может быть отрицательной")
     Double cost;

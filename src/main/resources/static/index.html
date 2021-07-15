@@ -52,6 +52,7 @@
         <tr>
             <td>Название</td>
             <td>Цена</td>
+            <td>Категория</td>
             <td></td>
         </tr>
         </thead>
@@ -61,6 +62,7 @@
                     <div style="font-weight:normal; max-width: 300px" ng-show="show"><b>Описание:</b> {{p.description}}</div>
                 </td>
                 <td>{{p.cost}}</td>
+                <td>{{p.category}}</td>
                 <td>
                     <button ng-show = "show" class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить</button>
                 </td>
@@ -68,11 +70,21 @@
         </tbody>
 
     </table>
-    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center">
-        <div style="margin: 10px" ng-repeat="p in PagesList">
-            <a href ng-click="fillTable(p)">{{p}}</a>
-        </div>
-    </div>
+    <nav aria-label="Page navigation" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 30px">
+        <ul class="pagination">
+            <li ng-class="first ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="fillTable(ProductsPage.number)">Пред.</a>
+            </li>
+
+            <li ng-class="ProductsPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'" ng-repeat="pageIndex in PagesList">
+                <a class="page-link" ng-click="fillTable(pageIndex)">{{pageIndex}}</a>
+            </li>
+
+            <li ng-class="last ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="fillTable(ProductsPage.number + 2)">След.</a>
+            </li>
+        </ul>
+    </nav>
 
     <h3>Добавить новый товар</h3>
     <form novalidate ng-submit="submitCreateNewProduct()">

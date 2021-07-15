@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.tronin.springdata.exceptions.ErrorResponse;
 import ru.tronin.springdata.exceptions.NoEntityException;
-@Slf4j
+
+import javax.persistence.EntityNotFoundException;
+
+
 @ControllerAdvice
 public class DefaultAdvice {
-    @ExceptionHandler(NoEntityException.class)
-    public ResponseEntity<?> handleNoEntityException(NoEntityException e){
-        log.error(e.getMessage());
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleNoEntityException(EntityNotFoundException e){
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
