@@ -16,6 +16,7 @@ import ru.tronin.springdata.repositories.ProductRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Data
@@ -30,12 +31,12 @@ public class ProductService {
 
 
     public ProductDto getEntityById(Long id) {
-        Product product = productRepository.getById(id);
+        Optional<Product> product = productRepository.findById(id);
 
-        if(product.getId() == null){
+        if(product.isEmpty()){
             throw new NoEntityException("Entity with id =" + id + " not found");
         }
-        return mapProductToDto(product);
+        return mapProductToDto(product.get());
     }
 
     public Page<ProductDto> findPaginatedProducts(Pageable pageable, Double min, Double max, String namePart){

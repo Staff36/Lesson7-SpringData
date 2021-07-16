@@ -17,24 +17,26 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             $scope.first = response.data.first;
             $scope.last = response.data.last;
             var pages = response.data.totalPages;
-            var pagination = fillArray(pages);
-            $scope.PagesList = pagination;
+            $scope.PagesList = fillArray(pages);
         });
     };
 
     function fillArray(pages) {
-        var a = [];
+        var pageArray = [];
         for (var i = 1; i <= pages; i++) {
-            a.push(i);
+            pageArray.push(i);
         }
-        return a;
+        return pageArray;
+    }
+
+    $scope.openProduct = function (product){
+
     }
 
     $scope.deleteProductById = function (id){
         $http.delete(contextPath + '/products/' + id, null).then(function (){
             $scope.fillTable();
         });
-
     }
 
     $scope.submitCreateNewProduct = function () {
@@ -58,7 +60,6 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         { name: '10', value: 10 },
         { name: '20', value: 20}
     ];
-
 
     $scope.fillTable();
 });
