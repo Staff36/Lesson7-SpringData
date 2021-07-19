@@ -27,7 +27,7 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
 
     public ProductDto getEntityById(Long id) {
@@ -63,18 +63,6 @@ public class ProductService {
     }
 
     public void create(Product product) {
-        productRepository.saveAndFlush(product);
-    }
-
-    public Double getMinimumCost(){
-        return productRepository.findMinCost();
-    }
-
-    public Double getMaximumCost(){
-        return productRepository.findMaxCost();
-    }
-
-    public void update(Product product) {
         productRepository.saveAndFlush(product);
     }
 

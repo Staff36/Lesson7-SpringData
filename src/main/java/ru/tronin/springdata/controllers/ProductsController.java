@@ -33,8 +33,7 @@ public class ProductsController {
     private ProductRepository productRepository;
 
     @GetMapping()
-    public Page<ProductDto> index(Model model,
-                                  @PageableDefault(size = 12) Pageable pageable,
+    public Page<ProductDto> index(@PageableDefault(size = 12) Pageable pageable,
                                   @RequestParam(name = "min_price", required = false) Double min,
                                   @RequestParam(name = "max_price", required = false) Double max,
                                   @RequestParam(name = "name_part", required = false) String partName){
