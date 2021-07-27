@@ -5,17 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.tronin.springdata.exceptions.NoEntityException;
-import ru.tronin.springdata.models.entities.Product;
 import ru.tronin.springdata.models.dto.ProductDto;
+import ru.tronin.springdata.models.entities.Product;
 import ru.tronin.springdata.repositories.ProductRepository;
+import ru.tronin.springdata.repositories.specifications.ProductSpecifications;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,21 +37,23 @@ public class ProductService {
         return mapProductToDto(product.get());
     }
 
-    public Page<ProductDto> findPaginatedProducts(Pageable pageable, Double min, Double max, String namePart){
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        List <Product> productsFromDB = getProducts(min, max, namePart);
-        List<ProductDto> products;
-        if (productsFromDB.size() < startItem){
-            products = Collections.emptyList();
-        } else {
-            int endItem = Math.min(startItem + pageSize, productsFromDB.size());
-            products = productsFromDB.subList(startItem, endItem)
-                    .stream()
-                    .map(this::mapProductToDto).toList();
+    public Page<ProductDto> findPaginatedProducts(Double min, Double max, String partName, Pageable pageable){
+        Specification<Product> specification = Specification.where(null);
+        if (min != null){
+            specification = specification.and(ProductSpecifications.priceGreaterOrEqualsThan(min));
         }
-        return new PageImpl<ProductDto>(products, PageRequest.of(currentPage, pageSize), productsFromDB.size());
+        if (max != null){
+            specification = specification.and(ProductSpecifications.priceLowerOrEqualsThen(max));
+        }
+        if (partName != null){
+            specification = specification.and(ProductSpecifications.nameLike(partName));
+        }
+
+        return productRepository.findAll(specification, pageable).map(this::mapProductToDto);
+    }
+
+    public void updateProduct(ProductDto product, Long id){
+        ProductDto productFromDB = getEntityById(id);
     }
 
     private ProductDto mapProductToDto(Product product){
@@ -70,20 +70,5 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<Product> getProducts(Double min, Double max, String namePart) {
-        if (min == null && max == null && namePart == null){
-            return productRepository.findAll();
-        }
-        if (min == null) {
-            min = productRepository.findMinCost();
-        }
-        if (max == null) {
-            max = productRepository.findMaxCost();
-        }
-        if (namePart == null){
-            namePart ="";
-        }
-        return productRepository.findProductLikePartName(namePart,min, max);
 
-    }
 }

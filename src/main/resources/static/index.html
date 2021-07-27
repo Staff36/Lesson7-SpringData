@@ -15,7 +15,46 @@
 
 <div class="container" ng-controller="indexController">
     <h1>Happy Market</h1>
-    <button class="btn" ng-click="changeShowCart()">Корзина</button>
+    <div>
+        <button class="btn btn-done" style="margin-top: 10px" ng-click="showSignInFunc()">Войти</button>
+        <button class="btn btn-done" style="margin-top: 10px" ng-click="showSignUpFunc()">Зарегистрироваться</button>
+        <button ng-show = "loggedIn" class="btn btn-danger" style="margin-top: 10px" ng-click="logout()">Выйти</button>
+    </div>
+    <div ng-show="showSignIn">
+        <h3>Войти</h3>
+        <form novalidate ng-submit="signIn()">
+            <div class="form-group col-md-6">
+                <label for="login">Логин</label>
+                <input class="form-control" type="text" ng-model="auth.login" id="login">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="password">Пароль</label>
+                <input class="form-control" type="text" ng-model="auth.password" id="password">
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit">Войти</button>
+            </div>
+        </form>
+    </div>
+    <div ng-show="showSignUp">
+        <h3>Зарегистрироваться</h3>
+        <form novalidate ng-submit="signUp()">
+            <div class="form-group col-md-6">
+                <label for="loginReg">Логин</label>
+                <input class="form-control" type="text" ng-model="registrateBody.login" id="loginReg">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="passwordReg">Пароль</label>
+                <input class="form-control" type="text" ng-model="registrateBody.password" id="passwordReg">
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <button class="btn" style="margin-top: 10px" ng-click="changeShowCart()">Корзина</button>
+    <hr>
     <table ng-show="showCart" class="table table-hover" cellpadding="0" cellspacing="0">
         <thead>
         <tr>
@@ -36,8 +75,6 @@
                 <button class="btn btn-danger" ng-click="removeOrderedProductFromCartById(op.id)">Удалить</button>
             </td>
         </tr>
-
-
         </tbody>
     </table>
 
@@ -57,11 +94,11 @@
                 <input class="form-control" type="text" ng-model="filter.name_part" id="filterNamePart">
             </div>
         </div>
-
         <div>
             <button class="btn btn-success" type="submit">Применить</button>
         </div>
     </form>
+    <hr>
     <div style="display: flex; justify-content: space-between; align-items: center">
         <h3>Список товаров</h3>
         <select style="margin: 10px 20% 10px 0" id="pageSize" ng-options= "option.value as option.name for option in numberPages" ng-init="filter.size = 5" ng-model="filter.size" >
@@ -96,8 +133,8 @@
             </td>
         </tr>
         </tbody>
-
     </table>
+    <hr>
     <nav aria-label="Page navigation" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 30px">
         <ul class="pagination">
             <li ng-class="first ? 'page-item disabled' : 'page-item'">
@@ -113,7 +150,7 @@
             </li>
         </ul>
     </nav>
-
+    <hr>
     <h3>Добавить новый товар</h3>
     <form novalidate ng-submit="submitCreateNewProduct()">
         <div class="form-group col-md-6">

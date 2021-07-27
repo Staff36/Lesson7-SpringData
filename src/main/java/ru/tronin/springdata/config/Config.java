@@ -18,7 +18,7 @@ public class Config {
 
     @Bean
     @Scope("prototype")
-    public Map<ProductDto, Integer> orderedProducts(){
+    public Map<ProductDto, Integer> orderedProducts() {
         return new HashMap<>();
     }
 

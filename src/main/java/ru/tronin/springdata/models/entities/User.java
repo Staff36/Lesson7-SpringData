@@ -1,33 +1,41 @@
 package ru.tronin.springdata.models.entities;
 
-import lombok.*;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Getter
-@Setter
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "products")
-public class Product {
+@Data
+@Table(name = "users")
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String name;
-    String description;
-    Double cost;
+    Integer id;
 
-    @ManyToOne(targetEntity = Category.class)
-    @JoinColumn(name = "category", referencedColumnName = "id")
-    Category category;
+    @Column
+    String login;
+
+    @Column
+    String password;
+
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    List<Role> roles;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -36,11 +44,4 @@ public class Product {
     @Column(name = "updated_at")
     @UpdateTimestamp
     LocalDateTime updatedAt;
-
-    public Product(String name, String description, Double cost, Category category) {
-        this.name = name;
-        this.description = description;
-        this.cost = cost;
-        this.category = category;
-    }
 }

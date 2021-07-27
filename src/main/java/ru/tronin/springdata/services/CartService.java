@@ -26,25 +26,25 @@ public class CartService {
     private CartRepository cartRepository;
 
 
-    private OrderedProductsDto mapProductToDto(ProductDto product, Integer value){
+    private OrderedProductsDto mapProductToDto(ProductDto product, Integer value) {
         OrderedProductsDto orderedProductsDto = modelMapper.map(product, OrderedProductsDto.class);
         orderedProductsDto.setCount(value);
         return orderedProductsDto;
     }
 
-    public List<OrderedProductsDto> getAllOrderedProducts(){
-    List<OrderedProductsDto> list = new ArrayList<>();
+    public List<OrderedProductsDto> getAllOrderedProducts() {
+        List<OrderedProductsDto> list = new ArrayList<>();
         cartRepository.getAllOrderedProducts().forEach((key, value) -> {
             list.add(mapProductToDto(key, value));
         });
         return list;
     }
 
-    public void addProductToCart(Long id, Integer value){
+    public void addProductToCart(Long id, Integer value) {
         cartRepository.addProductToCart(id, value);
     }
 
-    public void removeProductFromCart(Long id){
+    public void removeProductFromCart(Long id) {
         cartRepository.removeProductFromCart(id);
     }
 }

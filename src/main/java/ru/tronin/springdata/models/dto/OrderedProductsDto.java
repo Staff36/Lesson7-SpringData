@@ -19,9 +19,9 @@ public class OrderedProductsDto {
 
     public OrderedProductsDto(Product product, Integer count) {
         this.id = product.getId();
-        this.name =  product.getName();
-        this.description =  product.getDescription();
-        this.cost =  product.getCost();
-        this.count =  count;
+        this.name = product.getName();
+        this.description = product.getDescription();
+        this.cost = product.getCost();
+        this.count = count;
     }
 }

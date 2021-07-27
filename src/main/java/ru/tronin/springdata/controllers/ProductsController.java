@@ -7,57 +7,43 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.tronin.springdata.models.entities.Product;
 import ru.tronin.springdata.models.dto.ProductDto;
-import ru.tronin.springdata.repositories.CategoriesRepository;
-import ru.tronin.springdata.repositories.ProductRepository;
+import ru.tronin.springdata.models.entities.Product;
 import ru.tronin.springdata.services.ProductService;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 public class ProductsController {
 
     @Autowired
     private ProductService productService;
-    @Autowired
-    private CategoriesRepository categoriesRepository;
-    @Autowired
-    private ProductRepository productRepository;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
     public Page<ProductDto> index(@PageableDefault(size = 12) Pageable pageable,
                                   @RequestParam(name = "min_price", required = false) Double min,
                                   @RequestParam(name = "max_price", required = false) Double max,
-                                  @RequestParam(name = "name_part", required = false) String partName){
+                                  @RequestParam(name = "name_part", required = false) String partName) {
 
-            return productService.findPaginatedProducts(pageable, min, max, partName);
+        return productService.findPaginatedProducts(min, max, partName, pageable);
     }
 
-
-
     @GetMapping("/{id}")
-    public ProductDto showProduct(@PathVariable Long id){
+    public ProductDto showProduct(@PathVariable Long id) {
 
-    return productService.getEntityById(id);
-}
-
-//    @GetMapping("/new")
-//    public String newProduct(Model model){
-//        model.addAttribute("prod", new Product());
-//        return "products/new";
-//     }
+        return productService.getEntityById(id);
+    }
 
     @PostMapping()
-    public ResponseEntity<Object> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()){
+    public ResponseEntity<Object> createProduct(@RequestBody Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList());
@@ -67,34 +53,23 @@ public class ProductsController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-//    @GetMapping("/{id}/edit")
-//    public String editProduct(Model model, @PathVariable Long id){
-//        try {
-//            model.addAttribute("prod", productService.getEntityById(id));
-//        } catch (NoEntityException ignored){
-//            return "products/notFound";
-//        }
-//        return "products/edit";
-//    }
-
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<Object> updateProduct(@RequestBody @Valid Product product,
-//                                BindingResult bindingResult){
-//        if (bindingResult.hasErrors()){
-//            List<String> errors = bindingResult.getAllErrors().stream()
-//                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-//                    .collect(Collectors.toList());
-//            return new ResponseEntity<>(errors, HttpStatus.OK);
-//        }
-//        productService.update(product);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id){
-        productService.deleteById(id);
+    @GetMapping("/{id}/edit")
+    public ProductDto editProduct(@PathVariable Long id) {
+        return productService.getEntityById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> updateProduct(@RequestBody ProductDto product, @PathVariable Long id) {
+        productService.updateProduct(product, id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteById(id);
+    }
 
 
 }

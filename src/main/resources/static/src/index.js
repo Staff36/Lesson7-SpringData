@@ -1,6 +1,27 @@
 angular.module('app', []).controller('indexController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8080';
+
+    const contextPath = 'http://localhost:8080/api/v1';
     $scope.showCart = false;
+    $scope.showSignUp = false;
+    $scope.showSignIn = false;
+    $scope.loggedIn = false;
+
+    $scope.showSignInFunc = function (){
+        if ($scope.showSignIn == false){
+            $scope.showSignIn = true;
+            $scope.showSignUp = false;
+        } else {
+            $scope.showSignIn = false;
+        }
+    };
+    $scope.showSignUpFunc = function (){
+        if ($scope.showSignUp == false){
+            $scope.showSignUp = true;
+            $scope.showSignIn = false;
+        } else {
+            $scope.showSignUp = false;
+        }
+    };
 
     $scope.fillTable = function (page) {
         $http({
@@ -22,14 +43,14 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         });
     };
 
-    $scope.changeShowCart = function (){
+    $scope.changeShowCart = function () {
         $scope.showCart = !$scope.showCart;
     };
 
     $scope.fillOrderedProducts = function () {
         $http({
             url: contextPath + '/order',
-            method: 'GET'
+            method: 'GET',
         }).then(function (response) {
             $scope.OrderedProducts = response.data;
         });
@@ -43,22 +64,43 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         return pageArray;
     }
 
+    $scope.signUp = function () {
+        $http.post(contextPath + '/auth/signup', $scope.registrateBody)
+            .then(function (response) {
+            });
+    };
+
+    $scope.signIn = function () {
+        $http.post(contextPath + '/auth/login', $scope.auth)
+            .then(function (response) {
+                $scope.token = 'Bearer ' + response.data.token;
+                $http.defaults.headers.common['Authorization'] = $scope.token;
+                $scope.loggedIn = true;
+                $scope.showSignUp = false;
+                $scope.showSignIn = false;
+            });
+    };
+
+    $scope.logout = function (){
+        $http.defaults.headers.common['Authorization'] = null;
+        $scope.loggedIn = false;
+    };
 
 
-    $scope.removeOrderedProductFromCartById = function (id){
+    $scope.removeOrderedProductFromCartById = function (id) {
         $http.delete(contextPath + '/order/' + id, null)
-            .then(function (){
-            $scope.fillOrderedProducts();
-        });
+            .then(function () {
+                $scope.fillOrderedProducts();
+            });
     }
 
-    $scope.deleteProductById = function (id){
-        $http.delete(contextPath + '/products/' + id, null).then(function (){
+    $scope.deleteProductById = function (id) {
+        $http.delete(contextPath + '/products/' + id, null).then(function () {
             $scope.fillTable();
         });
     }
 
-    $scope.orderProduct = function (product , id){
+    $scope.orderProduct = function (product, id) {
 
         $http.post(contextPath + '/order', product)
             .then(function (response) {
@@ -83,9 +125,9 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     };
 
     $scope.numberPages = [
-        { name: '5', value: 5 },
-        { name: '10', value: 10 },
-        { name: '20', value: 20}
+        {name: '5', value: 5},
+        {name: '10', value: 10},
+        {name: '20', value: 20}
     ];
     $scope.fillOrderedProducts();
     $scope.fillTable();
