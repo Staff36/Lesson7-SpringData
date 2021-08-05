@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import ru.tronin.springdata.models.entities.User;
+import ru.tronin.springdata.models.entities.users.User;
 import ru.tronin.springdata.services.UserService;
 
 @Component

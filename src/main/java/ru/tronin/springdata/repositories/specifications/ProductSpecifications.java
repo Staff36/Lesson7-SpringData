@@ -1,7 +1,7 @@
 package ru.tronin.springdata.repositories.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
-import ru.tronin.springdata.models.entities.Product;
+import ru.tronin.springdata.models.entities.product.Product;
 
 public class ProductSpecifications {
 

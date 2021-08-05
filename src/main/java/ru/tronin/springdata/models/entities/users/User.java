@@ -1,4 +1,4 @@
-package ru.tronin.springdata.models.entities;
+package ru.tronin.springdata.models.entities.users;
 
 
 import lombok.AccessLevel;
@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.tronin.springdata.models.entities.address.UsersAddress;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,11 +27,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column
     String login;
-
-    @Column
     String password;
+    String email;
+    @Column(name = "birth_date")
+    LocalDate birthDate;
+    String phoneNumber;
+    @ManyToMany
+    @JoinTable(name = "users_addresses",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id"))
+    List<UsersAddress> addresses;
 
     @ManyToMany
     @JoinTable(name = "users_roles",

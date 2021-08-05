@@ -1,4 +1,4 @@
-package ru.tronin.springdata.models.entities;
+package ru.tronin.springdata.models.entities.product;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

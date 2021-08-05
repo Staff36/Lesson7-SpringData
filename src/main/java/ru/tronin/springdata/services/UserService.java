@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tronin.springdata.exceptions.NoEntityException;
-import ru.tronin.springdata.models.entities.Role;
-import ru.tronin.springdata.models.entities.User;
+import ru.tronin.springdata.models.entities.users.Role;
+import ru.tronin.springdata.models.entities.users.User;
 import ru.tronin.springdata.repositories.RoleRepository;
 import ru.tronin.springdata.repositories.UserRepository;
 

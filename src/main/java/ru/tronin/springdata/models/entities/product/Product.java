@@ -1,4 +1,4 @@
-package ru.tronin.springdata.models.entities;
+package ru.tronin.springdata.models.entities.product;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -25,6 +24,7 @@ public class Product {
     String description;
     Double cost;
 
+
     @ManyToOne(targetEntity = Category.class)
     @JoinColumn(name = "category", referencedColumnName = "id")
     Category category;
@@ -36,6 +36,7 @@ public class Product {
     @Column(name = "updated_at")
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
 
     public Product(String name, String description, Double cost, Category category) {
         this.name = name;

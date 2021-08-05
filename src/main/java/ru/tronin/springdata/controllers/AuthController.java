@@ -8,7 +8,7 @@ import ru.tronin.springdata.config.jwt.JwtProvider;
 import ru.tronin.springdata.models.dto.AuthRequestDto;
 import ru.tronin.springdata.models.dto.AuthResponseDto;
 import ru.tronin.springdata.models.dto.SignUpRequestDto;
-import ru.tronin.springdata.models.entities.User;
+import ru.tronin.springdata.models.entities.users.User;
 import ru.tronin.springdata.services.UserService;
 
 @RestController

@@ -1,4 +1,4 @@
-package ru.tronin.springdata.models.entities;
+package ru.tronin.springdata.models.entities.users;
 
 import lombok.AccessLevel;
 import lombok.Data;
