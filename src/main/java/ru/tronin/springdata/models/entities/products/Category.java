@@ -1,4 +1,4 @@
-package ru.tronin.springdata.models.entities.product;
+package ru.tronin.springdata.models.entities.products;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -15,19 +16,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "categories")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
-    String description;
-    Double cost;
-
-
-    @ManyToOne(targetEntity = Category.class)
-    @JoinColumn(name = "category", referencedColumnName = "id")
-    Category category;
+    @OneToMany(mappedBy = "category")
+    List<Product> products;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -37,11 +33,4 @@ public class Product {
     @UpdateTimestamp
     LocalDateTime updatedAt;
 
-
-    public Product(String name, String description, Double cost, Category category) {
-        this.name = name;
-        this.description = description;
-        this.cost = cost;
-        this.category = category;
-    }
 }

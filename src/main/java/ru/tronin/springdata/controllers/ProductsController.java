@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.tronin.springdata.models.dto.ProductDto;
-import ru.tronin.springdata.models.entities.product.Product;
+import ru.tronin.springdata.models.entities.products.Product;
 import ru.tronin.springdata.services.ProductService;
 
 import java.util.List;

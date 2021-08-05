@@ -1,4 +1,4 @@
-package ru.tronin.springdata.models.entities.deliveries;
+package ru.tronin.springdata.models.entities.addresses;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import ru.tronin.springdata.models.entities.addresses.UsersAddress;
-import ru.tronin.springdata.models.entities.orders.Order;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,18 +16,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name = "deliveries")
-public class Delivery {
+@Table(name = "address")
+public class UsersAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @ManyToOne
-    @Column(name = "order_id")
-    Order order;
-    @ManyToOne
-    UsersAddress address;
-    Double coast;
+    //Считаю, что тут Игер возможен, так как в 99% случаев адрес будем доставать полностью
+    @ManyToOne(fetch = FetchType.EAGER)
+    City city;
+    @Column(name = "house_number")
+    String houseNumber;
+    @Column(name = "flat_number")
+    String flatNumber;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -38,5 +37,4 @@ public class Delivery {
     @Column(name = "updated_at")
     @UpdateTimestamp
     LocalDateTime updatedAt;
-
 }

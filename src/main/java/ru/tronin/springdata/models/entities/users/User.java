@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import ru.tronin.springdata.models.entities.address.UsersAddress;
+import ru.tronin.springdata.models.entities.addresses.UsersAddress;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -32,6 +32,7 @@ public class User {
     String email;
     @Column(name = "birth_date")
     LocalDate birthDate;
+    @Column(name = "phone_number")
     String phoneNumber;
     @ManyToMany
     @JoinTable(name = "users_addresses",

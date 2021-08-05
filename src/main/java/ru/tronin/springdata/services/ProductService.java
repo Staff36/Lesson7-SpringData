@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.tronin.springdata.exceptions.NoEntityException;
 import ru.tronin.springdata.models.dto.ProductDto;
-import ru.tronin.springdata.models.entities.product.Product;
+import ru.tronin.springdata.models.entities.products.Product;
 import ru.tronin.springdata.repositories.ProductRepository;
 import ru.tronin.springdata.repositories.specifications.ProductSpecifications;
 
@@ -71,4 +71,7 @@ public class ProductService {
     }
 
 
+    public Optional<Product> findProductById(Long id) {
+        return productRepository.findById(id);
+    }
 }

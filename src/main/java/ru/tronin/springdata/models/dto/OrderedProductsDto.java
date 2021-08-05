@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.tronin.springdata.models.entities.product.Product;
+import ru.tronin.springdata.models.entities.products.Product;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)

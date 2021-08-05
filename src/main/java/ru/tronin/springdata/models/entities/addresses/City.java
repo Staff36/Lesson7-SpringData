@@ -1,4 +1,4 @@
-package ru.tronin.springdata.models.entities.address;
+package ru.tronin.springdata.models.entities.addresses;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,12 +13,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Data
+@Table(name = "cities")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
-    @ManyToOne
+    //Считаю, что тут Игер возможен, так как в 99% случаев адрес будем доставать полностью
+    @ManyToOne(fetch = FetchType.EAGER)
     Region region;
 
 }

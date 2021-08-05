@@ -1,36 +1,32 @@
-package ru.tronin.springdata.models.entities.product;
+package ru.tronin.springdata.models.entities.warehouse;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.tronin.springdata.models.entities.products.Product;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Getter
-@Setter
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "categories")
-public class Category {
+@Data
+@Table(name = "products_stock")
+public class ProductsStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String name;
-    @OneToMany(mappedBy = "category")
-    List<Product> products;
-
-    @Column(name = "created_at")
-    @CreationTimestamp
-    LocalDateTime createdAt;
+    @OneToOne
+    Product product;
+    Long quantity;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
     LocalDateTime updatedAt;
-
 }
